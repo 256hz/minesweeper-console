@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require_relative './Game.rb'
 
 # Cell class
 class Cell
@@ -26,9 +27,9 @@ class Cell
 
   def step
     if @is_mine
-      Game.end
-    else 
-      Board.clear
+      @hidden = false
+      return 'mine'
+    else show
     end
   end
 end

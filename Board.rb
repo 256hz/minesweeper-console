@@ -49,7 +49,7 @@ class Board
   end
 
   def out_of_bounds(x, y, spot)
-    x + spot[0].negative? || y + spot[1].negative? || x + spot[0] >= @rows || y + spot[1] >= @columns
+    (x + spot[0]).negative? || (y + spot[1]).negative? || x + spot[0] >= @rows || y + spot[1] >= @columns
   end
 
   def show

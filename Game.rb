@@ -46,20 +46,21 @@ class Game
   end
 
   def mark_cell
-    puts "Mark"
-    x, y = get_coords
+    puts 'Mark'
+    x, y = input_coords
     @board.matrix[x][y].mark
     turn
   end
 
   def step_on_cell
-    puts "step"
-    x, y = get_coords
-    @board.matrix[x][y].step
+    puts 'Step'
+    x, y = input_coords
+    result = @board.matrix[x][y].step
+    game_end if result == 'mine'
     turn
   end
 
-  def get_coords
+  def input_coords
     print "Which row (0-#{@board.rows - 1}): "
     x = gets.chomp.to_i
     print "Which column (0-#{@board.columns - 1}): "
@@ -67,6 +68,10 @@ class Game
     [x, y]
   end
 
-  def end_game
+  def game_end
+    system('clear') || system('cls')
+    @board.show
+    puts 'You stepped on a mine!'
+    exit
   end
 end
