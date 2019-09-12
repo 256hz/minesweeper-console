@@ -2,17 +2,18 @@
 
 # Cell class
 class Cell
-  attr_reader :type
-  attr_accessor :hidden, :marked
-  
+  attr_reader :is_mine
+  attr_accessor :hidden, :marked, :mines_near
+
   def initialize
-    @type = create_type
+    @is_mine = create_type
+    @mines_near = 0
     @marked = false
     @hidden = true
   end
 
   def create_type
-    Random.rand(0..1) <= 0.15 ? 'mine' : 'empty'
+    Random.rand <= 0.2
   end
 
   def mark
@@ -24,10 +25,9 @@ class Cell
   end
 
   def step
-    case @type
-    when 'mine'
+    if @is_mine
       Game.end
-    when 'empty'
+    else 
       Board.clear
     end
   end
