@@ -5,19 +5,19 @@ OBJECTS
 
 METHODS
 - Board
-  - create
+  - Create
+  - Clear
 - Cell
-  - create
-  - mark
-  - step
+  - Create
+  - Mark
+  - Step
 - Game
   - Get input / REPL
   - Start
   - Quit
   - Mark cell
   - Step on cell
-  - Win
-  - Lose
+  - End
 
 ATTRIBUTES
 - Board
@@ -26,6 +26,6 @@ ATTRIBUTES
 - Cell
   - Type
   - Marked
-  - Shown
+  - Hidden
 - Game
   - Died
