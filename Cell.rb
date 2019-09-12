@@ -28,7 +28,7 @@ class Cell
   def step
     if @is_mine
       @hidden = false
-      return 'mine'
+      'mine'
     else show
     end
   end
