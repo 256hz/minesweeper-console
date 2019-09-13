@@ -23,7 +23,7 @@ class Game
   end
 
   def turn
-    check_for_win
+    win?
     system('clear') || system('cls')
     @board.show
     puts 'What would you like to do next?'
@@ -43,8 +43,8 @@ class Game
     end
   end
 
-  def check_for_win
-    win_game if @board.check_for_win
+  def win?
+    win_game if @board.win?
   end
 
   def quit

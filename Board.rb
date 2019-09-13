@@ -30,17 +30,13 @@ class Board
     ]
   end
 
-  def check_for_win
-    win = true
+  def win?
     @matrix.each do |row|
       row.each do |cell|
-        if cell.hidden && !cell.marked
-          win = false
-          break
-        end
+        return false if cell.hidden && !cell.marked
       end
     end
-    win
+    true
   end
 
   def clear(x, y, checked_cells)
@@ -105,8 +101,9 @@ class Board
       print "#{x}| "
       @columns.times do |y|
         cell = @matrix[x][y]
-        print cell.marked ? '+ ' : '☐ ' if cell.hidden
-        print cell.is_mine ? '* ' : "#{cell.mines_near} " unless cell.hidden
+        print cell.hidden ? cell.marked ? '+ ' : '☐ ' : cell.is_mine ? '* ' : "#{cell.mines_near} "
+        # print cell.marked ? '+ ' : '☐ ' if cell.hidden
+        # print cell.is_mine ? '* ' : "#{cell.mines_near} " unless cell.hidden
       end
       puts
     end

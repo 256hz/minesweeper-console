@@ -15,7 +15,7 @@ class Cell
   end
 
   def create_type
-    Random.rand < 0.3
+    Random.rand < 0.33
   end
 
   def mark
