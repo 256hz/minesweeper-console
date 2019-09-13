@@ -5,7 +5,7 @@ class Board
   attr_reader :rows, :columns
   attr_accessor :matrix
 
-  def initialize(rows, columns)
+  def initialize(rows: 10, columns: 10)
     @rows = rows
     @columns = columns
     @matrix = []
@@ -20,6 +20,48 @@ class Board
       [-1,  0],          [1,  0],
       [-1,  1], [0,  1], [1,  1]
     ]
+  end
+
+  def check_no_diags
+    [
+                [0, -1], 
+      [-1,  0],          [1,  0],
+                [0,  1] 
+    ]
+  end
+
+  def check_for_win
+    win = true
+    @matrix.each do |row|
+      row.each do |cell|
+        if cell.hidden && !cell.marked
+          win = false
+          break
+        end
+      end
+    end
+    win
+  end
+
+  def clear(x, y, checked_cells)
+    return if @matrix[x][y].is_mine
+
+    check_no_diags.each do |spot|
+      next if out_of_bounds(x, y, spot)
+
+      spot_x = x + spot[0]
+      spot_y = y + spot[1]
+      cell_name = "#{spot_x}_#{spot_y}"
+
+      next if checked_cells[cell_name]
+
+      cell = @matrix[spot_x][spot_y]
+      checked_cells[cell_name] = true
+      next if cell.is_mine
+
+      cell.hidden = false
+      clear(spot_x, spot_y, checked_cells)
+    end
   end
 
   def create_rows
@@ -53,23 +95,20 @@ class Board
   end
 
   def show
-    print '  '
+    print '   '
     @rows.times { |x| print "#{x} " }
-    puts ''
+    puts
+    print '  '
+    @rows.times { print '__' }
+    puts
     @rows.times do |x|
-      print "#{x} "
+      print "#{x}| "
       @columns.times do |y|
         cell = @matrix[x][y]
-        # print cell.is_mine ? '* ' : "#{cell.mines_near} "
-        if cell.hidden
-          print cell.marked ? '? ' : '☐ '
-        elsif !cell.is_mine
-          print "#{cell.mines_near} "
-        elsif cell.is_mine
-          print '* '
-        end
+        print cell.marked ? 'o ' : '☐ ' if cell.hidden
+        print cell.is_mine ? '* ' : "#{cell.mines_near} " unless cell.hidden
       end
-      puts ''
+      puts
     end
   end
 end

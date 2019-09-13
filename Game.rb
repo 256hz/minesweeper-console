@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative './Board.rb'
 require_relative './Cell.rb'
 
@@ -11,16 +12,18 @@ class Game
 
   def start
     puts 'Welcome to Console Minesweeper!'
-    puts 'First, let\'s get the size of the board.'
-    print 'Number of rows: '
-    rows = gets.chomp.to_i
-    print 'Number of columns: '
-    columns = gets.chomp.to_i
-    @board = Board.new(rows, columns)
+    # puts 'First, let\'s get the size of the board.'
+    # print 'Number of rows: '
+    # rows = gets.chomp.to_i
+    # print 'Number of columns: '
+    # columns = gets.chomp.to_i
+    # @board = Board.new(rows, columns)
+    @board = Board.new
     turn
   end
 
   def turn
+    check_for_win
     system('clear') || system('cls')
     @board.show
     puts 'What would you like to do next?'
@@ -30,9 +33,9 @@ class Game
     when 'q'
       quit
     when 'm'
-      mark_cell
+      mark
     when 's'
-      step_on_cell
+      step
     else
       puts 'Sorry, try again'
       sleep 1
@@ -40,38 +43,57 @@ class Game
     end
   end
 
+  def check_for_win
+    win_game if @board.check_for_win
+  end
+
   def quit
     puts 'Goodbye!'
     exit
   end
 
-  def mark_cell
+  def mark
     puts 'Mark'
     x, y = input_coords
     @board.matrix[x][y].mark
     turn
   end
 
-  def step_on_cell
+  def step
     puts 'Step'
     x, y = input_coords
     result = @board.matrix[x][y].step
-    game_end if result == 'mine'
+    lose_game if result == 'mine'
+    @board.clear(x, y, {})
     turn
   end
 
   def input_coords
-    print "Which row (0-#{@board.rows - 1}): "
+    max_row = @board.rows - 1
+    max_col = @board.columns - 1
+    print "Row (0-#{max_row}): "
     x = gets.chomp.to_i
-    print "Which column (0-#{@board.columns - 1}): "
+    print "Column (0-#{max_col}): "
     y = gets.chomp.to_i
+    if x > max_row || y > max_col
+      puts 'Out of range or bad input'
+      sleep(1)
+      input_coords
+    end
     [x, y]
   end
 
-  def game_end
+  def lose_game
     system('clear') || system('cls')
     @board.show
     puts 'You stepped on a mine!'
+    exit
+  end
+
+  def win_game
+    system('clear') || system('cls')
+    @board.show
+    puts 'You won!'
     exit
   end
 end

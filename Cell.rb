@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative './Game.rb'
 
 # Cell class
@@ -14,7 +15,7 @@ class Cell
   end
 
   def create_type
-    Random.rand <= 0.2
+    Random.rand < 0.3
   end
 
   def mark
@@ -26,10 +27,7 @@ class Cell
   end
 
   def step
-    if @is_mine
-      @hidden = false
-      'mine'
-    else show
-    end
+    show
+    'mine' if @is_mine
   end
 end
