@@ -105,7 +105,7 @@ class Board
       print "#{x}| "
       @columns.times do |y|
         cell = @matrix[x][y]
-        print cell.marked ? 'o ' : '☐ ' if cell.hidden
+        print cell.marked ? '+ ' : '☐ ' if cell.hidden
         print cell.is_mine ? '* ' : "#{cell.mines_near} " unless cell.hidden
       end
       puts
